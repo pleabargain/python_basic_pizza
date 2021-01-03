@@ -32,6 +32,7 @@ topping = input('''Do you want pepperoni?
                    y = yes 
                    n = no\n\n''')
 if topping == 'n':
+    pass
     #TODO: figure out how to handle the no answers!
     #continue
 if topping == 'y' and start_order =='s':
@@ -47,7 +48,7 @@ extra_cheese = input('''Do you want extra cheese?\n
                         y =yes\n
                         n=no\n''')
 if extra_cheese == 'n':
-    continue
+    pass
 if extra_cheese == 'y' and start_order =='s':
     bill += 2
     print(f'You want extra cheese. So, your bill is now: ${bill}')
