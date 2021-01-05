@@ -1,70 +1,53 @@
+#fancy pizza order 
+
 #pizza order
+
+
+#--- basis price ---
 
 #small pizza = 12
 #medium pizza = 15
 #medium pizza = 20
 
-
+# ---price for pepperoni depending on pizza size ---
 #pepperoni small = 3
 #pepperoni medium = 5
 #pepperoni large = 8
 
+# --- price for cheese depending on pizza size ----
 #extra_cheese_small =3
 #extra_cheese_med =5
 #extra_cheese_med =8
 
-start_order = input('''
-                    size of pizza you want?\n
-                    s = small\n
-                    m = medium\n
-                    l =large\n\n
-                    ''')
-if start_order == 's':
-    bill = 12
-    print (f'Your bill is now: ${bill}')
-if start_order == 'm':
-    bill = 15
-    print (f'Your bill is now: ${bill}')
-if start_order == 'l':
-    bill = 20
-    print (f'Your bill is now: ${bill}')
-topping = input('''Do you want pepperoni?
-                   y = yes 
-                   n = no\n\n''')
-if topping == 'n':
-    pass
-    #TODO: figure out how to handle the no answers!
-    #continue
-if topping == 'y' and start_order =='s':
-    bill += 3
-    print (f'You want pepperoni. So, your bill is now: ${bill}')
-if topping == 'y' and start_order =='m':
-    bill += 6
-    print (f'You want pepperoni. So, your bill is now: ${bill}')
-if topping == 'y' and start_order =='l':
-    bill += 9
-    print (f'You want pepperoni. So, your bill is now: ${bill}')
-extra_cheese = input('''Do you want extra cheese?\n
-                        y =yes\n
-                        n=no\n''')
-if extra_cheese == 'n':
-    pass
-if extra_cheese == 'y' and start_order =='s':
-    bill += 2
-    print(f'You want extra cheese. So, your bill is now: ${bill}')
-if extra_cheese == 'y' and start_order =='m':
-    bill += 4
-    print(f'You want extra cheese. So, your bill is now: ${bill}')
-if extra_cheese == 'y' and start_order =='l':
-    bill += 6
-    print(f'You want extra cheese. So, your bill is now: ${bill}')
-    print (f'''Thank you for placing your order with\n
-    PizzaAutoMat!\n\n
-    Your bill is now: ${bill}''')     
-else:
-    print (f'''Thank you for placing your order with\n
-    PizzaAutoMat!\n\n
-    Your bill is now: ${bill}''')
+from collections import namedtuple
+
+Price = namedtuple("Price", ["small", "medium", "large"])
+
+size_list = Price._fields # the underscore is IMPORTANT
+
+basis = Price(12,15,20)
+pepperoni = Price(3,5,8)
+cheese = Price(3,5,8)
+
+# ask for pizza size
+
+def accept_answer(question, list_of_possible_answers):
+    while True:
+        answer = input(question + " >>>")
+        if answer.lower() in [a.lower() for a in list_of_possible_answers]:
+            return answer.lower()
+            
+print("pizza sizes and prices:")            
+for size in size_list:
+    print(size, "cost", getattr(basis, size))
+size = accept_answer("how big do you want your pizza?", size_list )
+cost = getattr(basis, size)        
+for extra in ("pepperoni", "cheese"):
+    price_for_extra = getattr(locals()[extra], size) # use globals() if inside a class/function
+    print(extra, " will cost:", price_for_extra)
+    if accept_answer(f"do you want {extra}? (yes or no)", ["yes", "no"]) == "yes":
+        cost += price_for_extra
+print("your total cost:", cost)
 
 
 
